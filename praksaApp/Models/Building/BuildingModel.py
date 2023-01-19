@@ -10,6 +10,7 @@ class Building(models.Model):
     countyId = models.ForeignKey(County, on_delete=models.CASCADE)
     companyId = models.ForeignKey(Company, on_delete=models.CASCADE)
     representativeId = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, unique=True)
+    isActive = models.BooleanField(default=True)
     
     class Meta:
         db_table = "Building"

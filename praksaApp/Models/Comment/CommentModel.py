@@ -7,6 +7,7 @@ class Comment(models.Model):
     personId = models.ForeignKey(Person, on_delete=models.CASCADE)
     reportId = models.ForeignKey(Report, on_delete=models.CASCADE)
     content = models.TextField()
+    isActive = models.BooleanField(default=True)
     
     class Meta:
         db_table = "Comment"

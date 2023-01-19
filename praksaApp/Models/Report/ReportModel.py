@@ -5,6 +5,7 @@ from ..Role.RoleModel import Role
 class Report(models.Model):
     personId = models.ForeignKey(Person, on_delete=models.CASCADE)
     roleId = models.ForeignKey(Role, on_delete=models.CASCADE)
+    isActive = models.BooleanField(default=True)
     
     
     class Meta:

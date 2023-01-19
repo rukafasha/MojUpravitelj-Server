@@ -6,6 +6,7 @@ class Appartment(models.Model):
     appartmentNumber = models.IntegerField()
     buildingId = models.ForeignKey(Building, on_delete=models.CASCADE)
     numberOfPeople = models.IntegerField()
+    isActive = models.BooleanField(default=True)
     
     class Meta:
         db_table = "Appartment"
