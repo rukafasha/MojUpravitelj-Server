@@ -21,7 +21,7 @@ def CompanyList(request):
 def CompanyDetail(request, id):
     
     try:
-        company = Company.objects.get(countryId = id)
+        company = Company.objects.get(companyId = id)
     except Company.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':

@@ -21,7 +21,7 @@ def BuildingList(request):
 def BuildingDetail(request, id):
     
     try:
-        building = Building.objects.get(countryId = id)
+        building = Building.objects.get(buildingId = id)
     except Building.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':

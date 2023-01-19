@@ -21,7 +21,7 @@ def CountyList(request):
 def CountyDetail(request, id):
     
     try:
-        county = County.objects.get(countryId = id)
+        county = County.objects.get(countyId = id)
     except County.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
