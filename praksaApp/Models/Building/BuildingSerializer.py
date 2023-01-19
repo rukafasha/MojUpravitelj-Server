@@ -1,7 +1,7 @@
 from rest_framework import serializers
-import BuildingModel
+from .BuildingModel import Building
 
 class BuildingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BuildingModel.Building
+        model = Building.Building
         fields = '__all__'
