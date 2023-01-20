@@ -1,7 +1,7 @@
 from rest_framework import serializers
-import RolePersonModel
+from .RolePersonModel import RolePerson
 
 class RolePersonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RolePersonModel.RolePerson
+        model = RolePerson
         fields = '__all__'
