@@ -4,7 +4,7 @@ from ..Person.PersonModel import Person
 from ..Company.CompanyModel import Company
 
 class Building(models.Model):
-    buildingId = models.IntegerField(primary_key=True)
+    buildingId = models.AutoField(primary_key=True)
     address = models.CharField(max_length=255)
     numberOfAppartment = models.IntegerField()
     countyId = models.ForeignKey(County, on_delete=models.CASCADE)

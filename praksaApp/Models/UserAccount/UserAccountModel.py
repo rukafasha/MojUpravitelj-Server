@@ -1,7 +1,7 @@
 from django.db import models
 
 class UserAccount(models.Model):
-    userAccountId = models.IntegerField(primary_key=True)
+    userAccountId = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=255)
     isAactive = models.BooleanField(default=True)
