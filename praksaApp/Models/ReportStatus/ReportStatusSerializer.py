@@ -1,7 +1,7 @@
 from rest_framework import serializers
-import ReportStatusModel
+from .ReportStatusModel import ReportStatus
 
 class ReportStatusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ReportStatusModel.ReportStatus
+        model = ReportStatus
         fields = '__all__'
