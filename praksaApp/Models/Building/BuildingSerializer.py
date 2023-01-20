@@ -3,5 +3,5 @@ from .BuildingModel import Building
 
 class BuildingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Building.Building
+        model = Building
         fields = '__all__'

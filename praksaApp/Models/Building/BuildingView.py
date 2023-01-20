@@ -4,22 +4,22 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-@api_view(['GET', 'POST'])
-def BuildingList(request):
+@api_view(['GET'])
+def BuildingGetAll(request):
     if request.method == 'GET':
         building = Building.objects.all()
         serializer = BuildingSerializer(building, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    if request.method == 'POST':
-        serializer = BuildingSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+@api_view(['POST'])
+def BuildingAdd(request):
+    serializer = BuildingSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-@api_view(['GET', 'PUT', 'DELETE'])
-def BuildingDetail(request, id):
-    
+@api_view(['GET'])
+def BuildingGetByID(request, id):
     try:
         building = Building.objects.get(buildingId = id)
     except Building.DoesNotExist:
@@ -27,14 +27,25 @@ def BuildingDetail(request, id):
     if request.method == 'GET':
         serializer = BuildingSerializer(building)
         return Response(serializer.data)
-    if request.method == 'PUT':
-        serializer = BuildingSerializer(building, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    if request.method == 'DELETE':
-        building.isActive = False
-        serializer = BuildingSerializer(building)
+    
+@api_view(['PUT'])
+def BuildingPut(request, id):
+    try:
+        building = Building.objects.get(buildingId = id)
+    except Building.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    serializer = BuildingSerializer(building, data = request.data)
+    if serializer.is_valid():
         serializer.save()
-        
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def BuildingDelete(request, id):
+    try:
+        building = Building.objects.get(buildingId = id)
+    except Building.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    building.isActive = False
+    serializer = BuildingSerializer(building)
+    serializer.save()
