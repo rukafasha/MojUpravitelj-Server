@@ -6,10 +6,9 @@ from rest_framework import status
 
 @api_view(['GET'])
 def BuildingGetAll(request):
-    if request.method == 'GET':
-        building = Building.objects.all()
-        serializer = BuildingSerializer(building, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    building = Building.objects.all()
+    serializer = BuildingSerializer(building, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
 def BuildingAdd(request):

@@ -6,10 +6,9 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CountryGetAll(request):
-    if request.method == 'GET':
-        country = Country.objects.all()
-        serializer = CountrySerializer(country, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    country = Country.objects.all()
+    serializer = CountrySerializer(country, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
 def CountryAdd(request):

@@ -6,10 +6,9 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CompanyGetAll(request):
-    if request.method == 'GET':
-        company = Company.objects.all()
-        serializer = CompanySerializer(company, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    company = Company.objects.all()
+    serializer = CompanySerializer(company, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
 def CompanyAdd(request):

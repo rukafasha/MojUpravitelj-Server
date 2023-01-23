@@ -6,10 +6,9 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CountyGetAll(request):
-    if request.method == 'GET':
-        county = County.objects.all()
-        serializer = CountySerializer(county, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    county = County.objects.all()
+    serializer = CountySerializer(county, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
 def CountyAdd(request):
