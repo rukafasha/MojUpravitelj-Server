@@ -42,7 +42,7 @@ def AppartmentPut(request, id):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['DELETE'])
 def AppartmentDelete(request, id):
     try:
         appartment = Appartment.objects.get(appartmentId = id)
