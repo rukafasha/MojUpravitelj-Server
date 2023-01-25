@@ -1,7 +1,7 @@
 from rest_framework import serializers
-import CountyModel
+from .CountyModel import County
 
 class CountySerializer(serializers.ModelSerializer):
     class Meta:
-        model = CountyModel.County
+        model = County
         fields = '__all__'

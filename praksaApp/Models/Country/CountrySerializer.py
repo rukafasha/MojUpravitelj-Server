@@ -1,7 +1,7 @@
 from rest_framework import serializers
-import CountryModel
+from .CountryModel import Country
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = CountryModel.Country
+        model = Country
         fields = '__all__'
