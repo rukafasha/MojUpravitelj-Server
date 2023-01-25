@@ -3,6 +3,11 @@ from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, Rol
 from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
+from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
+from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete
+from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
+from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete
+from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
 
 urlpatterns = [
     path('role/', RoleGetAll),
@@ -28,15 +33,7 @@ urlpatterns = [
     path('person/<int:id>', PersonGetById),
     path('person/edit/<int:id>', PersonPut),
     path('person/delete/<int:id>', PersonDelete),
-]
-from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
-from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete
-from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
-from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete
-from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
-from django.urls import path
 
-urlpatterns = [
     path('appartment/', AppartmentGetAll),
     path('appartment/add', AppartmentAdd),
     path('appartment/<int:id>', AppartmentGetById),
@@ -66,5 +63,4 @@ urlpatterns = [
     path('reportStatus/<int:id>', ReportStatusGetById),
     path('reportStatus/edit/<int:id>', ReportStatusPut),
     path('reportStatus/delete/<int:id>', ReportStatusDelete),
-    
 ]
