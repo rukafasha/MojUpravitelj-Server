@@ -6,7 +6,7 @@ class AppartmentPerson(models.Model):
     id = models.AutoField(primary_key=True)
     personId = models.ForeignKey(Person, on_delete=models.CASCADE)
     appartmentId = models.ForeignKey(Appartment, on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
+    isActive = models.BooleanField(default=True)
     
     class Meta:
         db_table = "AppartmentPerson"
