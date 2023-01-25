@@ -3,6 +3,16 @@ from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
 from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID
 from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll, CompanyGetByID,CompanyPut
+from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
+from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete
+from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete
+from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
+from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
+from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete
+from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
+from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete
+from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
+
 
 urlpatterns = [
     path('country/', CountryGetAll),
@@ -28,19 +38,7 @@ urlpatterns = [
     path('company/<int:id>', CompanyGetByID),
     path('company/edit/<int:id>', CompanyPut),
     path('company/delete/<int:id>', CompanyDelete),
-]
-from django.urls import path
-from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
-from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete
-from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete
-from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
-from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
-from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete
-from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
-from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete
-from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
 
-urlpatterns = [
     path('role/', RoleGetAll),
     path('role/add', RoleAdd),
     path('role/<int:id>', RoleGetById),
@@ -89,7 +87,6 @@ urlpatterns = [
     path('report/edit/<int:id>', ReportPut),
     path('report/delete/<int:id>', ReportDelete),
     
-
     path('reportStatus/', ReportStatusGetAll),
     path('reportStatus/add', ReportStatusAdd),
     path('reportStatus/<int:id>', ReportStatusGetById),
