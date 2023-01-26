@@ -10,7 +10,7 @@ from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, Pe
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
 from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete
 from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
-from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete
+from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete, ReportGetByUser, ReportGetByCompany, ReportGetByBuilding
 from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
 
 
@@ -86,6 +86,9 @@ urlpatterns = [
     path('report/<int:id>', ReportGetById),
     path('report/edit/<int:id>', ReportPut),
     path('report/delete/<int:id>', ReportDelete),
+    path('report/get/user/<int:id>', ReportGetByUser),
+    path('report/get/building/<int:id>', ReportGetByBuilding),
+    path('report/get/company/<int:id>', ReportGetByCompany),
     
     path('reportStatus/', ReportStatusGetAll),
     path('reportStatus/add', ReportStatusAdd),

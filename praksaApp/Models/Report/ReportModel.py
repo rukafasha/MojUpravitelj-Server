@@ -8,11 +8,10 @@ class Report(models.Model):
     description = models.TextField()
     timeCreated = models.DateTimeField(auto_now_add=True)
     timeFinished = models.DateTimeField(auto_now_add=True, null=True)
-    madeBy = models.ForeignKey(Person, on_delete=models.CASCADE)
-    closedBy = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
+    madeBy = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="madeBy")
+    closedBy = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, related_name="closedBy")
     status = models.ForeignKey(ReportStatus, on_delete=models.CASCADE)
     isActive = models.BooleanField()
     
     class Meta:
         db_table = "Report"
-        unique_together = (('personId', 'roleId'),)

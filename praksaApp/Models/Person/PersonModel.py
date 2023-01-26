@@ -7,7 +7,7 @@ class Person(models.Model):
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
     dateOfBirth = models.DateField()
-    companyId = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    companyId = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     userAccountId = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     isActive = models.BooleanField(default=True)
     
