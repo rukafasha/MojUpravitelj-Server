@@ -1,7 +1,3 @@
-from ..AppartmentPerson.AppartmentPersonModel import AppartmentPerson
-from ..Appartment.AppartmentModel import Appartment
-from ..Company.CompanyModel import Company
-from ..Building.BuildingModel import Building
 from .ReportModel import Report
 from .ReportSerializer import ReportSerializer
 from ..Person.PersonModel import Person
