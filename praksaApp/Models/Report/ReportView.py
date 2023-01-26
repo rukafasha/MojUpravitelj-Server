@@ -1,5 +1,10 @@
+from ..AppartmentPerson.AppartmentPersonModel import AppartmentPerson
+from ..Appartment.AppartmentModel import Appartment
+from ..Company.CompanyModel import Company
+from ..Building.BuildingModel import Building
 from .ReportModel import Report
 from .ReportSerializer import ReportSerializer
+from ..Person.PersonModel import Person
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,7 +25,7 @@ def ReportAdd(request):
 @api_view(['GET'])
 def ReportGetById(request, id):
     try:
-        report = Report.objects.get(reportId = id)
+        report = Report.objects.get(id = id)
     except Report.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
@@ -31,7 +36,7 @@ def ReportGetById(request, id):
 @api_view(['PUT'])
 def ReportPut(request, id): 
     try:
-        report = Report.objects.get(reportId = id)
+        report = Report.objects.get(id = id)
     except Report.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
@@ -44,11 +49,43 @@ def ReportPut(request, id):
 @api_view(['DELETE'])
 def ReportDelete(request, id):
     try:
-        report = Report.objects.get(reportId = id)
+        report = Report.objects.get(id = id)
     except Report.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
     report.isActive = False
     serializer = ReportSerializer(report)
     serializer.save()
+    
+@api_view(['GET'])
+def ReportGetByUser(request, id):
+    try:
+        report = Report.objects.filter(madeBy_id = id)
+    except Report.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    
+    serializer = ReportSerializer(report, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def ReportGetByCompany(request, id):
+    
+    try:
+        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = id)
+    except Report.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = ReportSerializer(report, many=True)
+    return Response(serializer.data)
         
+        
+@api_view(['GET'])
+def ReportGetByBuilding(request, id):
+    
+    try:
+        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId = id)
+    except Report.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = ReportSerializer(report, many=True)
+    return Response(serializer.data)
