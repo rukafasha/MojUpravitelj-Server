@@ -1,7 +1,10 @@
 .venv/
 __pycache__/
-*.py[cod]
+*.pyc
 *$py.class
 
 build/
 dist/
+
+*~
+*.swp
