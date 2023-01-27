@@ -1,4 +1,7 @@
 from django.urls import path
+
+from praksaApp.Auth.AuthView import Login, Registration
+
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
 from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID
@@ -95,4 +98,7 @@ urlpatterns = [
     path('reportStatus/<int:id>', ReportStatusGetById),
     path('reportStatus/edit/<int:id>', ReportStatusPut),
     path('reportStatus/delete/<int:id>', ReportStatusDelete),
+
+    path('registration', Registration),
+    path('login', Login),
 ]
