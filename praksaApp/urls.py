@@ -1,7 +1,6 @@
 from django.urls import path
 
-from praksaApp.Auth.Login.LoginView import Login
-from praksaApp.Auth.Registration.RegistrationView import Registration
+from praksaApp.Auth.AuthView import Login, Registration
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
