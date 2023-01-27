@@ -11,13 +11,13 @@ def Login(request):
     try:
         person = UserAccount.objects.get(username = request.data['username'])
     except UserAccount.DoesNotExist:
-        return Response("User does not exist", status=status.HTTP_400_BAD_REQUEST)
+        return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
    
 
     try:
         person = UserAccount.objects.get(username = request.data['username'], password = request.data['password'])
     except UserAccount.DoesNotExist:
-        return Response("The Password You Entered Is Incorrect Please Try Again", status=status.HTTP_400_BAD_REQUEST)
+        return Response("The Password You Entered Is Incorrect Please Try Again", status=status.HTTP_401_UNAUTHORIZED)
 
     return Response("You are successfully logged in", status=status.HTTP_200_OK)
 
@@ -33,4 +33,4 @@ def Registration(request):
         Person.objects.create(firstName=request.data['firstName'], lastName=request.data['lastName'],dateOfBirth=request.data['dateOfBirth'],userAccountId = user__id)
         return Response("Successful registration.", status=status.HTTP_201_CREATED)
     
-    return Response("Unsuccessful registration. Username is already registered",status=status.HTTP_400_BAD_REQUEST)
+    return Response("Unsuccessful registration. Username is already registered",status=status.HTTP_409_CONFLICT)
