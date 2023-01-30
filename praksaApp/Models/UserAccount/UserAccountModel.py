@@ -4,7 +4,7 @@ class UserAccount(models.Model):
     userAccountId = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=255)
-    isAactive = models.BooleanField(default=True)
+    isActive = models.BooleanField(default=True)
     
     class Meta:
         db_table = "UserAccount"
