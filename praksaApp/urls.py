@@ -7,7 +7,7 @@ from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, County
 from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID
 from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll, CompanyGetByID,CompanyPut
 from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
-from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete
+from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete, RoleGetByUser
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
@@ -53,6 +53,7 @@ urlpatterns = [
     path('rolePerson/<int:id>', RolePersonGetById),
     path('rolePerson/edit/<int:id>', RolePersonPut),
     path('rolePerson/delete/<int:id>', RolePersonDelete),
+    path('rolePerson/get/user/<int:id>', RoleGetByUser),
     
     path('userAccount/', UserAccountGetAll),
     path('userAccount/add', UserAccountAdd),

@@ -51,3 +51,13 @@ def RolePersonDelete(request, id):
     rolePerson.isActive = False
     serializer = RolePersonSerializer(rolePerson)
     serializer.save()
+    
+@api_view(['GET'])
+def RoleGetByUser(request, id):
+    try:
+        role = RolePerson.objects.filter(personId_id = id)
+    except RolePerson.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    
+    serializer = RolePersonSerializer(role, many=True)
+    return Response(serializer.data)
