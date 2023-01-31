@@ -52,9 +52,9 @@ def BuildingDelete(request, id):
 @api_view(['GET'])
 def GetBuildingByUser(request, id):
     try:
-        building = Building.objects.filter(building_rel__appartment_rel__personId = id)
+        building = Building.objects.get(building_rel__appartment_rel__personId = id)
     except Building.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    serializer = BuildingSerializer(building, many=True)
+    serializer = BuildingSerializer(building)
     return Response(serializer.data)
