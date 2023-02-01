@@ -41,7 +41,7 @@ def Login(request):
     
 
         try:
-            building = Building.objects.get(building_rel__appartment_rel__personId = person.personId)
+            building = Building.objects.get(buildingId__appartmentId__personId = person.personId)
 
             building_serializer = BuildingSerializer(building)
         except Building.DoesNotExist:
@@ -58,15 +58,22 @@ def Login(request):
         return Response("The Password You Entered Is Incorrect Please Try Again", status=status.HTTP_401_UNAUTHORIZED)
 
 
-
 @api_view(['POST'])
-def Registration(request):       
+def Registration(request):
     try:
-        person = UserAccount.objects.get(username = request.data['username'])
+        user_account = UserAccount.objects.get(username = request.data['username'])
     except UserAccount.DoesNotExist:
         user__id = UserAccount.objects.create(username=request.data['username'], password=request.data['password'])
 
-        Person.objects.create(firstName=request.data['firstName'], lastName=request.data['lastName'],dateOfBirth=request.data['dateOfBirth'],userAccountId = user__id)
+        person__id = Person.objects.create(firstName=request.data['firstName'], lastName=request.data['lastName'],dateOfBirth=request.data['dateOfBirth'],userAccountId = user__id)
+        
+        try:
+            tenant_role = Role.objects.get(roleName = "tenant")
+            RolePerson.objects.create(personId = person__id, roleId = tenant_role)
+        except Role.DoesNotExist:
+            return Response("The role does not exist",status=status.HTTP_404_NOT_FOUND)
+
+        
         return Response("Successful registration.", status=status.HTTP_201_CREATED)
     
     return Response("Unsuccessful registration. Username is already registered",status=status.HTTP_409_CONFLICT)
