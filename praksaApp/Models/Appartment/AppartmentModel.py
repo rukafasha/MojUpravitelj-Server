@@ -4,7 +4,7 @@ from ..Building.BuildingModel import Building
 class Appartment(models.Model):
     appartmentId = models.AutoField(primary_key=True)
     appartmentNumber = models.IntegerField()
-    buildingId = models.ForeignKey(Building, on_delete=models.CASCADE, related_name="building_rel")
+    buildingId = models.ForeignKey(Building, on_delete=models.CASCADE)
     numberOfPeople = models.IntegerField()
     isActive = models.BooleanField(default=True)
     
