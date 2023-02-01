@@ -4,8 +4,8 @@ from ..Appartment.AppartmentModel import Appartment
 
 class AppartmentPerson(models.Model):
     id = models.AutoField(primary_key=True)
-    personId = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="person_rel")
-    appartmentId = models.ForeignKey(Appartment, on_delete=models.CASCADE, related_name="appartment_rel")
+    personId = models.ForeignKey(Person, on_delete=models.CASCADE)
+    appartmentId = models.ForeignKey(Appartment, on_delete=models.CASCADE)
     isActive = models.BooleanField(default=True)
     
     class Meta:
