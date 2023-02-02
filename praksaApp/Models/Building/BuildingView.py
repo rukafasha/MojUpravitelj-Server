@@ -58,3 +58,23 @@ def GetBuildingByUser(request, id):
     
     serializer = BuildingSerializer(building)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def GetBuildingByCompany(request, id):
+    try:
+        building = Building.objects.filter(companyId = id)
+    except Building.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = BuildingSerializer(building, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def GetBuildingByAdress(request, string):
+    try:
+        building = Building.objects.get(address = string)
+    except Building.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = BuildingSerializer(building)
+    return Response(serializer.data)
