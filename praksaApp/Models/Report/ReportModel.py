@@ -7,9 +7,9 @@ class Report(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     timeCreated = models.DateTimeField(auto_now_add=True)
-    timeFinished = models.DateTimeField(auto_now_add=True, null=True)
+    timeFinished = models.DateTimeField(null=True, blank=True)
     madeBy = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="madeBy")
-    closedBy = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, related_name="closedBy")
+    closedBy = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, related_name="closedBy", blank=True)
     status = models.ForeignKey(ReportStatus, on_delete=models.CASCADE)
     isActive = models.BooleanField()
     
