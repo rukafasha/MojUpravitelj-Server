@@ -94,7 +94,7 @@ urlpatterns = [
     path('report/edit/<int:id>', ReportPut),
     path('report/delete/<int:id>', ReportDelete),
     path('report/get/user/<int:id>', ReportGetByUser),
-    path('report/get/building/<int:id>', ReportGetByBuilding),
+    path('report/get/building', ReportGetByBuilding),
     path('report/get/company/<int:id>', ReportGetByCompany),
     
     path('reportStatus/', ReportStatusGetAll),

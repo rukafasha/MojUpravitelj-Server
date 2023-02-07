@@ -13,3 +13,5 @@ class AppartmentPerson(models.Model):
         unique_together = (('personId', 'appartmentId'))
         index_together = (('personId', 'appartmentId'),)
         
+    def __str__(self):
+        return self.personId.firstName + " " + self.personId.lastName + " - " + str(self.appartmentId.appartmentNumber)

@@ -15,3 +15,6 @@ class Report(models.Model):
     
     class Meta:
         db_table = "Report"
+        
+    def __str__(self):
+        return self.madeBy.firstName + " " + self.madeBy.lastName + " - " + self.title

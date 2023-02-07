@@ -9,3 +9,6 @@ class Role(models.Model):
     
     class Meta:
         db_table = "Role"
+        
+    def __str__(self):
+        return str(self.roleId) + " - " + self.roleName

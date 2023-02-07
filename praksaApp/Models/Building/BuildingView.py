@@ -62,7 +62,7 @@ def GetBuildingByUser(request, id):
 @api_view(['GET'])
 def GetBuildingByCompany(request, id):
     try:
-        building = Building.objects.filter(companyId = id)
+        building = Building.objects.filter(companyId = id).order_by("address")
     except Building.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     

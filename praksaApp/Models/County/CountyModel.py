@@ -9,3 +9,6 @@ class County(models.Model):
     
     class Meta:
         db_table = "County"
+        
+    def __str__(self):
+        return str(self.countyId) + " - " + self.countryId.countryName + " - " + self.countyName

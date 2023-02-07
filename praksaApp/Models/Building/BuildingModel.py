@@ -14,3 +14,5 @@ class Building(models.Model):
     
     class Meta:
         db_table = "Building"
+    def __str__(self):
+        return self.address

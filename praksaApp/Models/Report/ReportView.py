@@ -1,3 +1,5 @@
+from math import trunc
+from os import truncate
 from .ReportModel import Report
 from .ReportSerializer import ReportSerializer
 from ..Person.PersonModel import Person
@@ -56,7 +58,7 @@ def ReportDelete(request, id):
 @api_view(['GET'])
 def ReportGetByUser(request, id):
     try:
-        report = Report.objects.filter(madeBy_id = id)
+        report = Report.objects.filter(madeBy_id = id, isActive = True).order_by("-timeCreated")
     except Report.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     
@@ -67,7 +69,7 @@ def ReportGetByUser(request, id):
 def ReportGetByCompany(request, id):
     
     try:
-        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = id)
+        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = id, isActive = True).order_by("-timeCreated")
     except Report.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -75,11 +77,10 @@ def ReportGetByCompany(request, id):
     return Response(serializer.data)
         
         
-@api_view(['GET'])
-def ReportGetByBuilding(request, id):
-    
+@api_view(['POST'])
+def ReportGetByBuilding(request):
     try:
-        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId = id)
+        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId__in = request.data, isActive = True).order_by("-timeCreated")
     except Report.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     

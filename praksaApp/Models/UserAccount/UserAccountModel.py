@@ -8,3 +8,6 @@ class UserAccount(models.Model):
     
     class Meta:
         db_table = "UserAccount"
+        
+    def __str__(self):
+        return self.username

@@ -13,3 +13,6 @@ class RolePerson(models.Model):
         db_table = "RolePerson"
         unique_together = (('personId', 'roleId'),)
         index_together = (('personId', 'roleId'),)
+        
+    def __str__(self):
+        return self.personId.firstName + " " + self.personId.lastName + " - " + self.roleId.roleName

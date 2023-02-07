@@ -8,3 +8,5 @@ class ReportStatus(models.Model):
     class Meta:
         db_table = "ReportStatus"
         
+    def __str__(self):
+        return str(self.reportStatusId) + " - " + self.statusDescription

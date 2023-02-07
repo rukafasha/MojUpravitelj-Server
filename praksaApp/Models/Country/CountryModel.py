@@ -7,3 +7,6 @@ class Country(models.Model):
     
     class Meta:
         db_table = "Country"
+        
+    def __str__(self):
+        return str(self.countryId) + " - " + self.countryName

@@ -11,3 +11,6 @@ class Comment(models.Model):
     
     class Meta:
         db_table = "Comment"
+        
+    def __str__(self):
+        return self.personId.firstName + " " + self.personId.lastName + " - " + self.content

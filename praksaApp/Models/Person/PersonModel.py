@@ -13,3 +13,6 @@ class Person(models.Model):
     
     class Meta:
         db_table = "Person"
+        
+    def __str__(self):
+        return self.firstName + " " + self.lastName

@@ -10,3 +10,5 @@ class Appartment(models.Model):
     
     class Meta:
         db_table = "Appartment"
+    def __str__(self):
+        return self.buildingId.address + " - " +str(self.appartmentNumber)
