@@ -1,10 +1,11 @@
 from django.db import models
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
 
-class Role(models.Model):
+class Role(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
     roleId = models.AutoField(primary_key=True)
     roleName = models.CharField(max_length=100)
     roleDescription = models.TextField()
-    isActive = models.BooleanField(default=True)
 
     
     class Meta:

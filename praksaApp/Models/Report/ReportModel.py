@@ -1,8 +1,10 @@
 from django.db import models
 from ..Person.PersonModel import Person
 from ..ReportStatus.ReportStatusModel import ReportStatus
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
 
-class Report(models.Model):
+class Report(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -11,7 +13,6 @@ class Report(models.Model):
     madeBy = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="madeBy")
     closedBy = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, related_name="closedBy", blank=True)
     status = models.ForeignKey(ReportStatus, on_delete=models.CASCADE)
-    isActive = models.BooleanField()
     
     class Meta:
         db_table = "Report"

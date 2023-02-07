@@ -7,7 +7,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def PersonGetAll(request):
-    person = Person.objects.all()
+    person = Person.objects.all().distinct()
     serializer = PersonSerializer(person, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -44,10 +44,6 @@ def PersonPut(request, id):
 @api_view(['DELETE'])
 def PersonDelete(request, id):
     try:
-        person = Person.objects.get(personId = id)
+        person = Person.objects.get(personId = id).delete()
     except Person.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-
-    person.isActive = False
-    serializer = PersonSerializer(person)
-    serializer.save()

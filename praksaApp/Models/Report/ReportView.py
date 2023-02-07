@@ -9,7 +9,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def ReportGetAll(request):
-    report = Report.objects.all()
+    report = Report.objects.all().distinct()
     serializer = ReportSerializer(report, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -47,18 +47,14 @@ def ReportPut(request, id):
 @api_view(['DELETE'])
 def ReportDelete(request, id):
     try:
-        report = Report.objects.get(id = id)
+        report = Report.objects.get(id = id).delete()
     except Report.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-
-    report.isActive = False
-    serializer = ReportSerializer(report)
-    serializer.save()
     
 @api_view(['GET'])
 def ReportGetByUser(request, id):
     try:
-        report = Report.objects.filter(madeBy_id = id, isActive = True).order_by("-timeCreated")
+        report = Report.objects.filter(madeBy_id = id).order_by("-timeCreated").distinct()
     except Report.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     
@@ -69,7 +65,7 @@ def ReportGetByUser(request, id):
 def ReportGetByCompany(request, id):
     
     try:
-        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = id, isActive = True).order_by("-timeCreated")
+        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = id).order_by("-timeCreated").distinct()
     except Report.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -80,7 +76,7 @@ def ReportGetByCompany(request, id):
 @api_view(['POST'])
 def ReportGetByBuilding(request):
     try:
-        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId__in = request.data, isActive = True).order_by("-timeCreated")
+        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId__in = request.data).order_by("-timeCreated").distinct()
     except Report.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
