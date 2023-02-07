@@ -8,7 +8,6 @@ from rest_framework import status
 def AppartmentGetAll(request):
     appartment = Appartment.objects.all()
     serializer = AppartmentSerializer(appartment, many=True)
-    print("helloo get")
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
@@ -16,7 +15,6 @@ def AppartmentAdd(request):
     serializer = AppartmentSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
-        print("helloo post")
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 @api_view(['GET'])
@@ -39,7 +37,7 @@ def AppartmentPut(request, id):
     serializer = AppartmentSerializer(appartment, data = request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
