@@ -1,3 +1,6 @@
+from praksaApp.Models.Appartment.AppartmentModel import Appartment
+from praksaApp.Models.Building.BuildingModel import Building
+from praksaApp.Models.Person.PersonModel import Person
 from .AppartmentPersonModel import AppartmentPerson
 from .AppartmentPersonSerializer import AppartmentPersonSerializer
 from rest_framework.decorators import api_view
@@ -12,11 +15,18 @@ def AppartmentPersonGetAll(request):
     
 @api_view(['POST'])
 def AppartmentPersonAdd(request):
-    serializer = AppartmentPersonSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    try:
+        appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
+        person = Person.objects.get(personId = request.data['person_id'])
+
+        AppartmentPerson.objects.create(appartmentId=appartment, personId=person)
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(status=status.HTTP_201_CREATED)
         
+
+
 @api_view(['GET'])
 def AppartmentPersonGetById(request, id):
     try:
@@ -48,3 +58,24 @@ def AppartmentPersonDelete(request, id):
         return Response(status = status.HTTP_404_NOT_FOUND)
 
         
+
+@api_view(['GET'])
+def GetApartmentsByBuildingId(request, id):
+    try:
+        apartments = Appartment.objects.filter(buildingId = id)
+        
+        
+    except Building.DoesNotExist:
+        return Response("Apartments not found.",status=status.HTTP_404_NOT_FOUND)
+
+    apartment_details = []
+
+    for apartment in apartments:
+        apartment_details.append({
+            "apartmentId":apartment.appartmentId,
+            "apartmentNumber":apartment.appartmentNumber,
+            "buildingId":apartment.buildingId.buildingId,
+            "address":apartment.buildingId.address
+            })
+    
+    return Response(apartment_details)
