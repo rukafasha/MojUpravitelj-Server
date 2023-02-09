@@ -4,11 +4,11 @@ from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
-from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID, GetBuildingByUser
+from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID, GetApartmentsByBuildingId, GetBuildingByUser, GetBuildingsByAddress
 from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll, CompanyGetByID,CompanyPut
 from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
 from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete, RoleGetByUser
-from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete
+from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete, UserAccountUsernameVerification
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
 from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete
@@ -36,6 +36,9 @@ urlpatterns = [
     path('building/edit/<int:id>', BuildingPut),
     path('building/delete/<int:id>', BuildingDelete),
     path('building/get/user/<int:id>', GetBuildingByUser),
+
+    path('building/details/<str:address>', GetBuildingsByAddress),
+
     
     path('company/', CompanyGetAll),
     path('company/add', CompanyAdd),
@@ -61,6 +64,7 @@ urlpatterns = [
     path('userAccount/<int:id>', UserAccountGetById),
     path('userAccount/edit/<int:id>', UserAccountPut),
     path('userAccount/delete/<int:id>', UserAccountDelete),
+    path('userAccount/username/<str:username>', UserAccountUsernameVerification),
     
     path('person/', PersonGetAll),
     path('person/add', PersonAdd),
@@ -73,6 +77,8 @@ urlpatterns = [
     path('appartment/<int:id>', AppartmentGetById),
     path('appartment/edit/<int:id>', AppartmentPut),
     path('appartment/delete/<int:id>', AppartmentDelete),
+
+    path('appartment/details/<int:id>', GetApartmentsByBuildingId),
 
     path('appartmentPerson/', AppartmentPersonGetAll),
     path('appartmentPerson/add', AppartmentPersonAdd),
@@ -104,4 +110,4 @@ urlpatterns = [
     path('registration', Registration),
     path('companyRegistration', CompanyRegistration),
     path('login', Login),
-]
+] 

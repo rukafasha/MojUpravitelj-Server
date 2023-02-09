@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 import json
+from praksaApp.Auth.AuthSerializer import CompanyRegistrationSerializer, LoginSerializer, RegistrationSerializer
 from praksaApp.Models.AppartmentPerson.AppartmentPersonModel import AppartmentPerson
 from praksaApp.Models.Building.BuildingModel import Building
 from praksaApp.Models.Building.BuildingSerializer import BuildingSerializer
@@ -18,12 +19,6 @@ from praksaApp.Models.RolePerson.RolePersonSerializer import RolePersonSerialize
 from praksaApp.Models.RolePerson.RolePersonView import RoleGetByUser
 from praksaApp.Models.UserAccount.UserAccountModel import UserAccount
 from rest_framework import serializers
-
-
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
 
 @api_view(['POST'])
 def Login(request):
@@ -71,26 +66,6 @@ def Login(request):
             return Response("Incorrect password. Please try again.", status=status.HTTP_401_UNAUTHORIZED)
     else:
         return Response("Invalid data received.",status=status.HTTP_400_BAD_REQUEST)
-    
-
-
-
-class CompanyRegistrationSerializer(serializers.Serializer):
-    firstName = serializers.CharField()
-    lastName = serializers.CharField()
-    username = serializers.CharField()
-    password = serializers.CharField()
-    dateOfBirth = serializers.DateField()
-    companyName = serializers.CharField()
-    isCompany = serializers.BooleanField()
-
-
-class RegistrationSerializer(serializers.Serializer):
-    firstName = serializers.CharField()
-    lastName = serializers.CharField()
-    username = serializers.CharField()
-    password = serializers.CharField()
-    dateOfBirth = serializers.DateField()
 
 
 @api_view(['POST'])
@@ -109,8 +84,10 @@ def Registration(request):
                 RolePerson.objects.create(personId = person__id, roleId = tenant_role)
             except Role.DoesNotExist:
                 return Response("Role not found.",status=status.HTTP_404_NOT_FOUND)
-            
-            return Response("Registration Successful.", status=status.HTTP_201_CREATED)
+
+            data = person__id.personId
+          
+            return Response(data, status=status.HTTP_201_CREATED)
         return Response("Registration failed. The username is already taken.",status=status.HTTP_409_CONFLICT)
     else:
         return Response("Invalid data received.",status=status.HTTP_400_BAD_REQUEST)
@@ -139,4 +116,3 @@ def CompanyRegistration(request):
         return Response("Registration failed. The username is already taken.",status=status.HTTP_409_CONFLICT)
     else:
         return Response("Invalid data received.",status=status.HTTP_400_BAD_REQUEST)
-

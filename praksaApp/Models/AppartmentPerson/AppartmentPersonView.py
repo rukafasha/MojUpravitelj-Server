@@ -1,3 +1,5 @@
+from praksaApp.Models.Appartment.AppartmentModel import Appartment
+from praksaApp.Models.Person.PersonModel import Person
 from .AppartmentPersonModel import AppartmentPerson
 from .AppartmentPersonSerializer import AppartmentPersonSerializer
 from rest_framework.decorators import api_view
@@ -12,11 +14,18 @@ def AppartmentPersonGetAll(request):
     
 @api_view(['POST'])
 def AppartmentPersonAdd(request):
-    serializer = AppartmentPersonSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    try:
+        appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
+        person = Person.objects.get(personId = request.data['person_id'])
+
+        AppartmentPerson.objects.create(appartmentId=appartment, personId=person)
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(status=status.HTTP_201_CREATED)
         
+
+
 @api_view(['GET'])
 def AppartmentPersonGetById(request, id):
     try:
