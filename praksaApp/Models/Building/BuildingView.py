@@ -11,7 +11,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def BuildingGetAll(request):
-    building = Building.objects.all()
+    building = Building.objects.all().distinct()
     serializer = BuildingSerializer(building, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -47,17 +47,35 @@ def BuildingPut(request, id):
 @api_view(['DELETE'])
 def BuildingDelete(request, id):
     try:
-        building = Building.objects.get(buildingId = id)
+        building = Building.objects.get(buildingId = id).delete()
     except Building.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-    building.isActive = False
-    serializer = BuildingSerializer(building)
-    serializer.save()
+
     
 @api_view(['GET'])
 def GetBuildingByUser(request, id):
     try:
         building = Building.objects.get(buildingId__appartmenId__personId = id)
+    except Building.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = BuildingSerializer(building)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def GetBuildingByCompany(request, id):
+    try:
+        building = Building.objects.filter(companyId = id).order_by("address").distinct()
+    except Building.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = BuildingSerializer(building, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def GetBuildingByAdress(request, string):
+    try:
+        building = Building.objects.get(address = string)
     except Building.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     

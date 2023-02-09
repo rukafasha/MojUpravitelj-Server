@@ -6,7 +6,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CommentGetAll(request):
-    comment = Comment.objects.all()
+    comment = Comment.objects.all().distinct()
     serializer = CommentSerializer(Comment, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -44,11 +44,6 @@ def CommentPut(request, id):
 @api_view(['DELETE'])
 def CommentDelete(request, id):
     try:
-        comment = Comment.objects.get(commentId = id)
+        comment = Comment.objects.get(commentId = id).delete()
     except Comment.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-
-    comment.isActive = False
-    serializer = CommentSerializer(comment)
-    serializer.save()
-        

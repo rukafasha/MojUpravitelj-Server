@@ -6,7 +6,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def ReportStatusGetAll(request):
-    reportStatus = ReportStatus.objects.all()
+    reportStatus = ReportStatus.objects.all().distinct()
     serializer = ReportStatusSerializer(reportStatus, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -43,11 +43,9 @@ def ReportStatusPut(request, id):
 @api_view(['DELETE'])
 def ReportStatusDelete(request, id):
     try:
-        reportStatus = ReportStatus.objects.get(reportStatusId = id)
+        reportStatus = ReportStatus.objects.get(reportStatusId = id).delete()
     except ReportStatus.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    reportStatus.isActive = False
-    serializer = ReportStatusSerializer(reportStatus)
-    serializer.save()
+
         

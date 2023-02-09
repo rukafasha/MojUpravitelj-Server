@@ -6,7 +6,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CompanyGetAll(request):
-    company = Company.objects.all()
+    company = Company.objects.all().distinct()
     serializer = CompanySerializer(company, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -42,9 +42,6 @@ def CompanyPut(request, id):
 @api_view(['DELETE'])
 def CompanyDelete(request, id):
     try:
-        company = Company.objects.get(companyId = id)
+        company = Company.objects.get(companyId = id).delete()
     except Company.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-    company.isActive = False
-    serializer = CompanySerializer(company)
-    serializer.save()
