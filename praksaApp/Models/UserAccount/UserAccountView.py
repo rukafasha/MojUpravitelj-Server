@@ -48,10 +48,6 @@ def UserAccountDelete(request, id):
     except UserAccount.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    userAccount.isActive = False
-    serializer = UserAccountSerializer(userAccount)
-    serializer.save()
-
 
 @api_view(['GET'])
 def UserAccountUsernameVerification(request, username):

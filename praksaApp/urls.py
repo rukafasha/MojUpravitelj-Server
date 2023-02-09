@@ -4,7 +4,7 @@ from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
-from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID, GetBuildingByUser,GetBuildingByCompany,GetBuildingByAdress, GetBuildingsByAddress
+from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID, GetBuildingByUser,GetBuildingByCompany, GetBuildingsByAddress
 from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll, CompanyGetByID,CompanyPut
 from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
 from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete, RoleGetByUser
@@ -37,7 +37,6 @@ urlpatterns = [
     path('building/delete/<int:id>', BuildingDelete),
     path('building/get/user/<int:id>', GetBuildingByUser),
     path('building/get/company/<int:id>', GetBuildingByCompany),
-    path('building/get/adress/<str:string>', GetBuildingByAdress),
 
     path('building/details/<str:address>', GetBuildingsByAddress),
 
