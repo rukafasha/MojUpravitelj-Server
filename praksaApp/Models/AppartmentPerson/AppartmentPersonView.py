@@ -1,4 +1,5 @@
 from praksaApp.Models.Appartment.AppartmentModel import Appartment
+from praksaApp.Models.Building.BuildingModel import Building
 from praksaApp.Models.Person.PersonModel import Person
 from .AppartmentPersonModel import AppartmentPerson
 from .AppartmentPersonSerializer import AppartmentPersonSerializer
@@ -60,3 +61,24 @@ def AppartmentPersonDelete(request, id):
     serializer = AppartmentPersonSerializer(appartmentPerson)
     serializer.save()
         
+
+@api_view(['GET'])
+def GetApartmentsByBuildingId(request, id):
+    try:
+        apartments = Appartment.objects.filter(buildingId = id)
+        
+        
+    except Building.DoesNotExist:
+        return Response("Apartments not found.",status=status.HTTP_404_NOT_FOUND)
+
+    apartment_details = []
+
+    for apartment in apartments:
+        apartment_details.append({
+            "apartmentId":apartment.appartmentId,
+            "apartmentNumber":apartment.appartmentNumber,
+            "buildingId":apartment.buildingId.buildingId,
+            "address":apartment.buildingId.address
+            })
+    
+    return Response(apartment_details)

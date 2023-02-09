@@ -91,26 +91,3 @@ def GetBuildingsByAddress(request, address):
             })
     
     return Response(building_details)
-
-
-@api_view(['GET'])
-def GetApartmentsByBuildingId(request, id):
-    try:
-        apartments = Appartment.objects.filter(buildingId = id)
-        
-        
-    except Building.DoesNotExist:
-        return Response("Apartments not found.",status=status.HTTP_404_NOT_FOUND)
-
-    apartment_details = []
-
-    for apartment in apartments:
-        apartment_details.append({
-            "buildingId":apartment.appartmentId,
-            "apartmentId":apartment.appartmentId,
-            "apartmentNumber":apartment.appartmentNumber,
-            "buildingId":apartment.buildingId.buildingId,
-            "address":apartment.buildingId.address
-            })
-    
-    return Response(apartment_details)
