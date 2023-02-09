@@ -6,7 +6,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CountyGetAll(request):
-    county = County.objects.all()
+    county = County.objects.all().distinct()
     serializer = CountySerializer(county, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -42,9 +42,6 @@ def CountyPut(request, id):
 @api_view(['DELETE'])
 def CountyDelete(request, id):
     try:
-        county = County.objects.get(countyId = id)
+        county = County.objects.get(countyId = id).delete()
     except County.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-    county.isActive = False
-    serializer = CountySerializer(county)
-    serializer.save()

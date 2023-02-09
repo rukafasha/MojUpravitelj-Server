@@ -7,7 +7,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def RolePersonGetAll(request):
-    rolePerson = RolePerson.objects.all()
+    rolePerson = RolePerson.objects.all().distinct()
     serializer = RolePersonSerializer(rolePerson, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -44,18 +44,15 @@ def RolePersonPut(request, id):
 @api_view(['DELETE'])
 def RolePersonDelete(request, id):
     try:
-        rolePerson = RolePerson.objects.get(rolePersonId = id)
+        rolePerson = RolePerson.objects.get(rolePersonId = id).delete()
     except RolePerson.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    rolePerson.isActive = False
-    serializer = RolePersonSerializer(rolePerson)
-    serializer.save()
     
 @api_view(['GET'])
 def RoleGetByUser(request, id):
     try:
-        role = RolePerson.objects.filter(personId_id = id)
+        role = RolePerson.objects.filter(personId_id = id).distinct()
     except RolePerson.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     

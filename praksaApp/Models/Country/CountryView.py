@@ -6,7 +6,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def CountryGetAll(request):
-    country = Country.objects.all()
+    country = Country.objects.all().distinct()
     serializer = CountrySerializer(country, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -42,9 +42,6 @@ def CountryPut(request, id):
 @api_view(['DELETE'])
 def CountryDelete(request, id):
     try:
-        country = Country.objects.get(countryId = id)
+        country = Country.objects.get(countryId = id).delete()
     except Country.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-    country.isActive = False
-    serializer = CountrySerializer(country)
-    serializer.save()
