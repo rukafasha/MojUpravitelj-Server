@@ -7,7 +7,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def UserAccountGetAll(request):
-    userAccount = UserAccount.objects.all()
+    userAccount = UserAccount.objects.all().distinct()
     serializer = UserAccountSerializer(userAccount, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -44,10 +44,7 @@ def UserAccountPut(request, id):
 @api_view(['DELETE'])
 def UserAccountDelete(request, id):
     try:
-        userAccount = UserAccount.objects.get(userAccountId = id)
+        userAccount = UserAccount.objects.get(userAccountId = id).delete()
     except UserAccount.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    userAccount.isActive = False
-    serializer = UserAccountSerializer(userAccount)
-    serializer.save()

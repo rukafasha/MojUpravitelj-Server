@@ -6,7 +6,7 @@ from rest_framework import status
 
 @api_view(['GET'])
 def AppartmentPersonGetAll(request):
-    appartmentPerson = AppartmentPerson.objects.all()
+    appartmentPerson = AppartmentPerson.objects.all().distinct()
     serializer = AppartmentPersonSerializer(appartmentPerson, many=True)        
     return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -43,11 +43,8 @@ def AppartmentPersonPut(request, id):
 @api_view(['DELETE'])
 def AppartmentPersonDelete(request, id):
     try:
-        appartmentPerson = AppartmentPerson.objects.get(appartmentPersonId = id)
+        appartmentPerson = AppartmentPerson.objects.get(appartmentPersonId = id).delete()
     except AppartmentPerson.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    appartmentPerson.isActive = False
-    serializer = AppartmentPersonSerializer(appartmentPerson)
-    serializer.save()
         
