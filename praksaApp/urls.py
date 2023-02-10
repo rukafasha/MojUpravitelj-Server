@@ -9,7 +9,7 @@ from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll
 from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
 from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete, RoleGetByUser
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete, UserAccountUsernameVerification
-from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
+from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete, GetPersonByAppartment
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
 from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId
 from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
@@ -37,7 +37,6 @@ urlpatterns = [
     path('building/delete/<int:id>', BuildingDelete),
     path('building/get/user/<int:id>', GetBuildingByUser),
     path('building/get/company/<int:id>', GetBuildingByCompany),
-
     path('building/details/<str:address>', GetBuildingsByAddress),
 
     
@@ -72,13 +71,13 @@ urlpatterns = [
     path('person/<int:id>', PersonGetById),
     path('person/edit/<int:id>', PersonPut),
     path('person/delete/<int:id>', PersonDelete),
+    path('person/get/apartment/<int:id>', GetPersonByAppartment),
 
     path('appartment/', AppartmentGetAll),
     path('appartment/add', AppartmentAdd),
     path('appartment/<int:id>', AppartmentGetById),
     path('appartment/edit/<int:id>', AppartmentPut),
     path('appartment/delete/<int:id>', AppartmentDelete),
-
     path('appartment/details/<int:id>', GetApartmentsByBuildingId),
 
     path('appartmentPerson/', AppartmentPersonGetAll),
