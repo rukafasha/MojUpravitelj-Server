@@ -23,9 +23,9 @@ def CountyGetByID(request, id):
         county = County.objects.get(countyId = id)
     except County.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = CountySerializer(county)
-        return Response(serializer.data)
+    
+    serializer = CountySerializer(county)
+    return Response(serializer.data)
     
 @api_view(['PUT'])
 def CountyPut(request, id):
@@ -45,3 +45,23 @@ def CountyDelete(request, id):
         county = County.objects.get(countyId = id).delete()
     except County.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def getCountyByCountry(request, string):
+    try:
+        county = County.objects.filter(countryId__countryName = string)
+    except County.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    
+    serializer = CountySerializer(county, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getCountyByName(request, string):
+    try:
+        county = County.objects.get(countyName = string)
+    except County.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    
+    serializer = CountySerializer(county)
+    return Response(serializer.data)

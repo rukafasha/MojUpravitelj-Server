@@ -3,7 +3,7 @@ from django.urls import path
 from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
-from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
+from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID, getCountyByCountry, getCountyByName
 from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID, GetBuildingByUser,GetBuildingByCompany, GetBuildingsByAddress
 from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll, CompanyGetByID,CompanyPut
 from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
@@ -29,6 +29,8 @@ urlpatterns = [
     path('county/<int:id>', CountyGetByID),
     path('county/edit/<int:id>', CountyPut),
     path('county/delete/<int:id>', CountyDelete),
+    path('county/country/<str:string>', getCountyByCountry),
+    path('county/<str:string>', getCountyByName),
     
     path('building/', BuildingGetAll),
     path('building/add', BuildingAdd),
