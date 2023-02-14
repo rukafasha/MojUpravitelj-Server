@@ -1,6 +1,7 @@
 from django.urls import path
 
 from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
+from praksaApp.Models.Request.RequestView import RequestGetAll, RequestGetNotApproved, RequestPut
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID
@@ -107,6 +108,10 @@ urlpatterns = [
     path('reportStatus/<int:id>', ReportStatusGetById),
     path('reportStatus/edit/<int:id>', ReportStatusPut),
     path('reportStatus/delete/<int:id>', ReportStatusDelete),
+
+    path('request/', RequestGetAll),
+    path('request/notApproved', RequestGetNotApproved),
+    path('request/edit/<int:id>', RequestPut),
 
     path('registration', Registration),
     path('companyRegistration', CompanyRegistration),

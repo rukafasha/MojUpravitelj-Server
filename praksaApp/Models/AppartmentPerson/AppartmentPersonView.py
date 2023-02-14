@@ -1,6 +1,10 @@
 from praksaApp.Models.Appartment.AppartmentModel import Appartment
 from praksaApp.Models.Building.BuildingModel import Building
 from praksaApp.Models.Person.PersonModel import Person
+from praksaApp.Models.Request.RequestModel import Request
+from praksaApp.Models.Role.RoleModel import Role
+from praksaApp.Models.RolePerson.RolePersonModel import RolePerson
+from praksaApp.Models.UserAccount.UserAccountModel import UserAccount
 from .AppartmentPersonModel import AppartmentPerson
 from .AppartmentPersonSerializer import AppartmentPersonSerializer
 from rest_framework.decorators import api_view
@@ -15,15 +19,38 @@ def AppartmentPersonGetAll(request):
     
 @api_view(['POST'])
 def AppartmentPersonAdd(request):
-    try:
-        appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
-        person = Person.objects.get(personId = request.data['person_id'])
 
-        AppartmentPerson.objects.create(appartmentId=appartment, personId=person)
+    try:
+        has_an_owner = AppartmentPerson.objects.filter(appartmentId = request.data['apartment_id'], isOwner=True).count()
+        
+        if has_an_owner:
+            person_obj = Person.objects.get(personId = request.data['person_id'])
+            user_account_status = UserAccount.objects.get(userAccountId = person_obj.userAccountId.userAccountId)
+
+            apt_owner = AppartmentPerson.objects.filter(appartmentId = request.data['apartment_id']).first()
+
+            Request.objects.create(ownerId =  apt_owner.personId, tenantId = person_obj, appartmentId = apt_owner.appartmentId)
+            
+            user_account_status.approved = False
+            user_account_status.save()
+
+            return Response("Apartment has an owner. Residency application submitted.",status=status.HTTP_200_OK)
+        else:
+            appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
+            person = Person.objects.get(personId = request.data['person_id'])
+
+            tenant_role = Role.objects.get(roleName = "tenant")
+            role_person = RolePerson.objects.get(personId = request.data['person_id'], roleId = tenant_role)
+
+            new_role = Role.objects.get(roleName = "owner")
+            role_person.roleId = new_role
+            role_person.save()
+
+            AppartmentPerson.objects.create(appartmentId=appartment, personId=person, isOwner=True)
+            return Response(status=status.HTTP_201_CREATED)
+
     except AppartmentPerson.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    return Response(status=status.HTTP_201_CREATED)
         
 
 
