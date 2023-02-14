@@ -48,4 +48,12 @@ def ReportStatusDelete(request, id):
         return Response(status = status.HTTP_404_NOT_FOUND)
 
 
-        
+@api_view(['GET'])
+def ReportStatusGetByStatus(request, status):
+    try:
+        reportStatus = ReportStatus.objects.get(statusDescription = status)
+    except ReportStatus.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+
+    serializer = ReportStatusSerializer(reportStatus)
+    return Response(serializer.data)

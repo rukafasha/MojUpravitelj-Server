@@ -1,5 +1,6 @@
 from math import trunc
 from os import truncate
+import re
 from .ReportModel import Report
 from .ReportSerializer import ReportSerializer
 from ..Person.PersonModel import Person
@@ -61,13 +62,18 @@ def ReportGetByUser(request, id):
     serializer = ReportSerializer(report, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def ReportGetByCompany(request, id):
-    
-    try:
-        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = id).order_by("-timeCreated").distinct()
-    except Report.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+@api_view(['POST'])
+def ReportGetByCompany(request):
+    if(request.data["filter"] == "all"):
+        try:
+            report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = request.data["lista"]).order_by("-timeCreated").distinct()
+        except Report.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        try:
+            report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__companyId__companyId = request.data["lista"], status__statusDescription=request.data["filter"]).order_by("-timeCreated").distinct()
+        except Report.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
     
     serializer = ReportSerializer(report, many=True)
     return Response(serializer.data)
@@ -75,10 +81,16 @@ def ReportGetByCompany(request, id):
         
 @api_view(['POST'])
 def ReportGetByBuilding(request):
-    try:
-        report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId__in = request.data).order_by("-timeCreated").distinct()
-    except Report.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    if(request.data["filter"] == "all"):
+        try:
+            report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId__in = request.data["lista"]).order_by("-timeCreated").distinct()
+        except Report.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        try:
+            report = Report.objects.filter(madeBy__appartmentperson__appartmentId__buildingId__buildingId__in = request.data["lista"], status__statusDescription=request.data["filter"]).order_by("-timeCreated").distinct()
+        except Report.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
     
     serializer = ReportSerializer(report, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data) 
