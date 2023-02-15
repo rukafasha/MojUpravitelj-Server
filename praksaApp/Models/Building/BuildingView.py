@@ -85,15 +85,25 @@ def GetBuildingsByAddress(request, address):
     building_details = []
 
     for building in buildings:
+
+        if(building.representativeId == None):
+            representative_id = None
+            representative_first_name = None
+            representative_last_name = None
+        else:
+            representative_id = building.representativeId.personId
+            representative_first_name = building.representativeId.firstName
+            representative_last_name = building.representativeId.lastName
+
         building_details.append({
             "buildingId":building.buildingId,
             "address":building.address,
             "numberOfApartments":building.numberOfAppartment,
             "countyName":building.countyId.countyName,
             "countryName":building.countyId.countryId.countryName,
-            "representativeId":building.representativeId.personId,
-            "representativeFirstName":building.representativeId.firstName,
-            "representativeLastName":building.representativeId.lastName,
+            "representativeId":representative_id,
+            "representativeFirstName":representative_first_name,
+            "representativeLastName":representative_last_name,
             "companyId":building.companyId.companyId,
             "companyName":building.companyId.companyName,
             })

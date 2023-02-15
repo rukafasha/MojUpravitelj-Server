@@ -9,6 +9,7 @@ class AppartmentPerson(SafeDeleteModel):
     id = models.AutoField(primary_key=True)
     personId = models.ForeignKey(Person, on_delete=models.CASCADE)
     appartmentId = models.ForeignKey(Appartment, on_delete=models.CASCADE)
+    isOwner = models.BooleanField(default=False)
     
     class Meta:
         db_table = "AppartmentPerson"
