@@ -47,3 +47,13 @@ def RoleDelete(request, id):
         role = Role.objects.get(roleId = id).delete()
     except Role.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def RoleGetByString(request, str):
+    try:
+        role = Role.objects.get(roleName = str)
+    except Role.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+
+    serializer = RoleSerializer(role)
+    return Response(serializer.data)
