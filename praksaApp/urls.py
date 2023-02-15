@@ -110,7 +110,7 @@ urlpatterns = [
     path('reportStatus/delete/<int:id>', ReportStatusDelete),
 
     path('request/', RequestGetAll),
-    path('request/notApproved', RequestGetNotApproved),
+    path('request/notApproved/<int:id>', RequestGetNotApproved),
     path('request/edit/<int:id>', RequestPut),
 
     path('registration', Registration),
