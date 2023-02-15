@@ -12,7 +12,7 @@ from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, R
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete, UserAccountUsernameVerification
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
-from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId
+from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId, GetApartmentsByPersonId
 from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
 from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete, ReportGetByUser, ReportGetByCompany, ReportGetByBuilding
 from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
@@ -87,6 +87,7 @@ urlpatterns = [
     path('appartmentPerson/<int:id>', AppartmentPersonGetById),
     path('appartmentPerson/edit/<int:id>', AppartmentPersonPut),
     path('appartmentPerson/delete/<int:id>', AppartmentPersonDelete),
+    path('appartmentPerson/person/<int:id>', GetApartmentsByPersonId),
     
     path('comment/', CommentGetAll),
     path('comment/add', CommentAdd),

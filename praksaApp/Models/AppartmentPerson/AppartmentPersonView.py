@@ -52,12 +52,10 @@ def AppartmentPersonAdd(request):
     except AppartmentPerson.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
-
-
 @api_view(['GET'])
 def AppartmentPersonGetById(request, id):
     try:
-        appartmentPerson = AppartmentPerson.objects.get(appartmentPersonId = id)
+        appartmentPerson = AppartmentPerson.objects.get(id = id)
     except AppartmentPerson.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
     
@@ -84,14 +82,11 @@ def AppartmentPersonDelete(request, id):
     except AppartmentPerson.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-        
-
 @api_view(['GET'])
 def GetApartmentsByBuildingId(request, id):
     try:
         apartments = Appartment.objects.filter(buildingId = id)
-        
-        
+          
     except Building.DoesNotExist:
         return Response("Apartments not found.",status=status.HTTP_404_NOT_FOUND)
 
@@ -106,3 +101,14 @@ def GetApartmentsByBuildingId(request, id):
             })
     
     return Response(apartment_details)
+
+@api_view(['GET'])
+def GetApartmentsByPersonId(request, id):
+    
+    try:
+        apartments = AppartmentPerson.objects.filter(personId = id)
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = AppartmentPersonSerializer(apartments, many=True)
+    return Response(serializer.data)
