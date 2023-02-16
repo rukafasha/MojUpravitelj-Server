@@ -19,6 +19,7 @@ from praksaApp.Models.RolePerson.RolePersonSerializer import RolePersonSerialize
 from praksaApp.Models.RolePerson.RolePersonView import RoleGetByUser
 from praksaApp.Models.UserAccount.UserAccountModel import UserAccount
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password, check_password
 
 @api_view(['POST'])
 def Login(request):
@@ -31,7 +32,8 @@ def Login(request):
             return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
 
         if user_account.approved:
-            if(user_account.password == request.data['password']):
+            if(check_password(request.data['password'], user_account.password)):
+            # if(user_account.password == request.data['password']):
                 person = Person.objects.get(userAccountId = user_account.userAccountId)
                 person_serializer = PersonSerializer(person)
 
@@ -80,7 +82,9 @@ def Registration(request):
         try:
             user_account = UserAccount.objects.get(username = request.data['username'])
         except UserAccount.DoesNotExist:
-            user__id = UserAccount.objects.create(username=request.data['username'], password=request.data['password'])
+            hashed_pwd = make_password(request.data["password"])
+
+            user__id = UserAccount.objects.create(username=request.data['username'], password=hashed_pwd)
             person__id = Person.objects.create(firstName=request.data['firstName'], lastName=request.data['lastName'],dateOfBirth=request.data['dateOfBirth'],userAccountId = user__id)
             
             try:
@@ -106,7 +110,8 @@ def CompanyRegistration(request):
         try:
             user_account = UserAccount.objects.get(username = request.data['username'])
         except UserAccount.DoesNotExist:
-            user__id = UserAccount.objects.create(username=request.data['username'], password=request.data['password'])
+            hashed_pwd = make_password(request.data["password"])
+            user__id = UserAccount.objects.create(username=request.data['username'], password=hashed_pwd)
             company__id = Company.objects.create(companyName=request.data['companyName'])
             person__id = Person.objects.create(firstName=request.data['firstName'], lastName=request.data['lastName'],dateOfBirth=request.data['dateOfBirth'],companyId=company__id,userAccountId = user__id)
             
