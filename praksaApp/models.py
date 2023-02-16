@@ -12,5 +12,6 @@ from .Models.ReportStatus.ReportStatusModel import *
 from .Models.Role.RoleModel import *
 from .Models.UserAccount.UserAccountModel import *
 from .Models.RolePerson.RolePersonModel import *
+from .Models.Request.RequestModel import *
 
 # Create your models here.

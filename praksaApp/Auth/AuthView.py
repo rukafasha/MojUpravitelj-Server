@@ -30,40 +30,44 @@ def Login(request):
         except UserAccount.DoesNotExist:
             return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
 
-        if(user_account.password == request.data['password']):
-            person = Person.objects.get(userAccountId = user_account.userAccountId)
-            person_serializer = PersonSerializer(person)
+        if user_account.approved:
+            if(user_account.password == request.data['password']):
+                person = Person.objects.get(userAccountId = user_account.userAccountId)
+                person_serializer = PersonSerializer(person)
 
-            try:
-                role_person = RolePerson.objects.filter(personId = person.personId)
+                try:
+                    role_person = RolePerson.objects.filter(personId = person.personId)
 
-                list_of_roles = []
+                    list_of_roles = []
 
-                for role in role_person:
-                    list_of_roles.append(role.roleId.roleName)
+                    for role in role_person:
+                        list_of_roles.append(role.roleId.roleName)
 
-            except RolePerson.DoesNotExist:
-                return Response("Role not found.",status = status.HTTP_404_NOT_FOUND)
+                except RolePerson.DoesNotExist:
+                    return Response("Role not found.",status = status.HTTP_404_NOT_FOUND)
 
-            building_ids = []
+                building_ids = []
 
-            try:
-                appartment_person_list = AppartmentPerson.objects.filter(personId = person.personId)
+                try:
+                    appartment_person_list = AppartmentPerson.objects.filter(personId = person.personId)
 
-                for app_person in appartment_person_list:
-                    building_ids.append(app_person.appartmentId.buildingId.buildingId)
-            except AppartmentPerson.DoesNotExist:
-                return Response("Building not found.",status=status.HTTP_404_NOT_FOUND)
+                    for app_person in appartment_person_list:
+                        building_ids.append(app_person.appartmentId.buildingId.buildingId)
+                except AppartmentPerson.DoesNotExist:
+                    return Response("Building not found.",status=status.HTTP_404_NOT_FOUND)
 
-            data = {   
-                    "person":person_serializer.data, 
-                    "building_ids":building_ids,
-                    "list_of_roles":list_of_roles
-                    }
+                data = {   
+                        "person":person_serializer.data, 
+                        "building_ids":building_ids,
+                        "list_of_roles":list_of_roles
+                        }
 
-            return Response(data, status=status.HTTP_201_CREATED)
+                return Response(data, status=status.HTTP_201_CREATED)
+            else:
+                return Response("Incorrect password. Please try again.", status=status.HTTP_401_UNAUTHORIZED)
+        
         else:
-            return Response("Incorrect password. Please try again.", status=status.HTTP_401_UNAUTHORIZED)
+            return Response("The owner must approve your request.",status=status.HTTP_405_METHOD_NOT_ALLOWED)
     else:
         return Response("Invalid data received.",status=status.HTTP_400_BAD_REQUEST)
 

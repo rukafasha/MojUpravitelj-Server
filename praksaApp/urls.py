@@ -1,6 +1,7 @@
 from django.urls import path
 
 from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
+from praksaApp.Models.Request.RequestView import RequestGetAll, RequestGetNotApproved, RequestPut
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID, getCountyByCountry, getCountyByName
@@ -11,8 +12,8 @@ from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, R
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete, UserAccountUsernameVerification
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete, GetPersonByAppartment
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
-from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId
 from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete, GetCommentByReport
+from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId, GetApartmentsByPersonId
 from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete, ReportGetByUser, ReportGetByCompany, ReportGetByBuilding
 from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete, ReportStatusGetByStatus
 
@@ -88,6 +89,7 @@ urlpatterns = [
     path('appartmentPerson/<int:id>', AppartmentPersonGetById),
     path('appartmentPerson/edit/<int:id>', AppartmentPersonPut),
     path('appartmentPerson/delete/<int:id>', AppartmentPersonDelete),
+    path('appartmentPerson/person/<int:id>', GetApartmentsByPersonId),
     
     path('comment/', CommentGetAll),
     path('comment/add', CommentAdd),
@@ -111,6 +113,10 @@ urlpatterns = [
     path('reportStatus/edit/<int:id>', ReportStatusPut),
     path('reportStatus/delete/<int:id>', ReportStatusDelete),
     path('reportStatus/description/<str:status>', ReportStatusGetByStatus),
+
+    path('request/', RequestGetAll),
+    path('request/notApproved/<int:id>', RequestGetNotApproved),
+    path('request/edit/<int:id>', RequestPut),
 
     path('registration', Registration),
     path('companyRegistration', CompanyRegistration),

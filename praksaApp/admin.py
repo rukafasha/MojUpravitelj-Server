@@ -12,6 +12,7 @@ from .Models.ReportStatus.ReportStatusModel import *
 from .Models.Role.RoleModel import *
 from .Models.UserAccount.UserAccountModel import *
 from .Models.RolePerson.RolePersonModel import *
+from .Models.Request.RequestModel import *
 
 # Register your models here.
 
@@ -28,3 +29,4 @@ admin.site.register(ReportStatus)
 admin.site.register(Role)
 admin.site.register(RolePerson)
 admin.site.register(UserAccount)
+admin.site.register(Request)
