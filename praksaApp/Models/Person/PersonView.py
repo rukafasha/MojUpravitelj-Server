@@ -1,3 +1,5 @@
+from praksaApp.Models.AppartmentPerson.AppartmentPersonSerializer import AppartmentPersonSerializer
+from praksaApp.Models.AppartmentPerson.AppartmentPersonModel import AppartmentPerson
 from .PersonModel import Person
 from .PersonSerializer import PersonSerializer
 from rest_framework.decorators import api_view
@@ -47,3 +49,19 @@ def PersonDelete(request, id):
         person = Person.objects.get(personId = id).delete()
     except Person.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])  
+def GetPersonByAppartment(request, id):
+    try:
+        appPerson = AppartmentPerson.objects.filter(appartmentId = id)
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    person = []
+    try:
+        for apperson in appPerson:
+            person.append(apperson.personId)
+    except Person.DoesNotExist:
+        return Response(status= status.HTTP_404_NOT_FOUND)
+    
+    serializer = PersonSerializer(person, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

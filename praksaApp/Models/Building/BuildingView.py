@@ -76,14 +76,12 @@ def GetBuildingByCompany(request, id):
 @api_view(['GET'])
 def GetBuildingsByAddress(request, address):
     try:
-        buildings = Building.objects.filter(address = address)
-        
+        buildings = Building.objects.filter(address = address).distinct()
         
     except Building.DoesNotExist:
         return Response("Buildings not found.",status=status.HTTP_404_NOT_FOUND)
 
     building_details = []
-
     for building in buildings:
 
         if(building.representativeId == None):
