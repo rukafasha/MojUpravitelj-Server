@@ -15,7 +15,7 @@ from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, A
 from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId, GetApartmentsByPersonId
 from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
 from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete, ReportGetByUser, ReportGetByCompany, ReportGetByBuilding
-from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete
+from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete, ReportStatusGetByStatus
 
 
 urlpatterns = [
@@ -103,13 +103,14 @@ urlpatterns = [
     path('report/delete/<int:id>', ReportDelete),
     path('report/get/user/<int:id>', ReportGetByUser),
     path('report/get/building', ReportGetByBuilding),
-    path('report/get/company/<int:id>', ReportGetByCompany),
+    path('report/get/company/', ReportGetByCompany),
     
     path('reportStatus/', ReportStatusGetAll),
     path('reportStatus/add', ReportStatusAdd),
     path('reportStatus/<int:id>', ReportStatusGetById),
     path('reportStatus/edit/<int:id>', ReportStatusPut),
     path('reportStatus/delete/<int:id>', ReportStatusDelete),
+    path('reportStatus/description/<str:status>', ReportStatusGetByStatus),
 
     path('request/', RequestGetAll),
     path('request/notApproved/<int:id>', RequestGetNotApproved),
