@@ -20,6 +20,10 @@ from praksaApp.Models.RolePerson.RolePersonView import RoleGetByUser
 from praksaApp.Models.UserAccount.UserAccountModel import UserAccount
 from rest_framework import serializers
 
+import jwt
+from datetime import datetime, timedelta
+
+
 @api_view(['POST'])
 def Login(request):
     login_serializer = LoginSerializer(data=request.data)
@@ -55,11 +59,16 @@ def Login(request):
                         building_ids.append(app_person.appartmentId.buildingId.buildingId)
                 except AppartmentPerson.DoesNotExist:
                     return Response("Building not found.",status=status.HTTP_404_NOT_FOUND)
-
+                
+                
+                jwt_token = generate_jwt_token(person_serializer.data, request.data['username'])
+                print(jwt_token)
+                      
                 data = {   
                         "person":person_serializer.data, 
                         "building_ids":building_ids,
-                        "list_of_roles":list_of_roles
+                        "list_of_roles":list_of_roles,
+                        "token": jwt_token
                         }
 
                 return Response(data, status=status.HTTP_201_CREATED)
@@ -120,3 +129,22 @@ def CompanyRegistration(request):
         return Response("Registration failed. The username is already taken.",status=status.HTTP_409_CONFLICT)
     else:
         return Response("Invalid data received.",status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+def generate_jwt_token(person_data, username):
+    expiration_time = datetime.utcnow() + timedelta(minutes=120)
+
+    payload = {
+        'person_id': person_data["personId"],
+        'user_account_id': person_data["userAccountId"],
+        'first_name': person_data["firstName"],
+        'last_name': person_data["lastName"],
+        'username': username,
+        'exp': expiration_time
+    }
+
+    secret_key = 'upravitelj-secret-key'
+    token = jwt.encode(payload, secret_key, algorithm='HS256')
+
+    return token
