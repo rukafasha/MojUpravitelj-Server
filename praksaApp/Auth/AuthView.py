@@ -27,7 +27,6 @@ from datetime import datetime, timedelta
 @api_view(['POST'])
 def Login(request):
     login_serializer = LoginSerializer(data=request.data)
-
     if login_serializer.is_valid():
         try:
             user_account = UserAccount.objects.get(username = request.data['username'])        
@@ -38,7 +37,8 @@ def Login(request):
             if(user_account.password == request.data['password']):
                 person = Person.objects.get(userAccountId = user_account.userAccountId)
                 person_serializer = PersonSerializer(person)
-
+                user_account.deviceID = request.data["deviceID"]
+                user_account.save()
                 try:
                     role_person = RolePerson.objects.filter(personId = person.personId)
 
@@ -89,11 +89,11 @@ def Registration(request):
         try:
             user_account = UserAccount.objects.get(username = request.data['username'])
         except UserAccount.DoesNotExist:
-            user__id = UserAccount.objects.create(username=request.data['username'], password=request.data['password'])
+            user__id = UserAccount.objects.create(username=request.data['username'], password=request.data['password'], )
             person__id = Person.objects.create(firstName=request.data['firstName'], lastName=request.data['lastName'],dateOfBirth=request.data['dateOfBirth'],userAccountId = user__id)
             
             try:
-                tenant_role = Role.objects.get(roleName = "tenant")
+                tenant_role = Role.objects.get(roleName = "Tenant")
                 RolePerson.objects.create(personId = person__id, roleId = tenant_role)
             except Role.DoesNotExist:
                 return Response("Role not found.",status=status.HTTP_404_NOT_FOUND)

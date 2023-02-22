@@ -47,3 +47,14 @@ def CommentDelete(request, id):
         comment = Comment.objects.get(commentId = id).delete()
     except Comment.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def GetCommentByReport(request, id):
+    try:
+        comment = Comment.objects.filter(reportId = id)
+    except Comment.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CommentSerializer(comment, many=True)
+        return Response(serializer.data)
