@@ -47,4 +47,13 @@ def AppartmentDelete(request, id):
     except Appartment.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
+@api_view(['POST'])
+def GetApartmentsWithoutPerson(request):
+    try:
+        apartments = Appartment.objects.all().exclude(appartmentId__in = request.data["lista"])
+    except Appartment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = AppartmentSerializer(apartments, many=True)
+    return Response(serializer.data)
         
