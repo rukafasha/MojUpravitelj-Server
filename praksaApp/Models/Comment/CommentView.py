@@ -1,8 +1,13 @@
+from praksaApp.Models.Person.PersonModel import Person
+from praksaApp.Models.Report.ReportModel import Report
+from praksaApp.Models.UserAccount.UserAccountModel import UserAccount
 from .CommentModel import Comment
 from .CommentSerializer import CommentSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from firebase_admin import credentials, messaging
+
 
 @api_view(['GET'])
 def CommentGetAll(request):
@@ -15,6 +20,20 @@ def CommentAdd(request):
     serializer = CommentSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
+        
+        reportId = request.data["reportId"]
+        report = Report.objects.get(id = reportId)
+        person = Person.objects.get(personId = report.madeBy.personId)
+        useracc = UserAccount.objects.get(userAccountId = person.userAccountId.userAccountId)
+        deviceId = useracc.deviceID
+        message = messaging.Message(
+            notification = messaging.Notification(
+                title = "New comment",
+                body = "You have a new comment on " + report.title + " by " + request.data["personId"],
+            ),
+            token = deviceId,
+        )
+        response = messaging.send(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 @api_view(['GET'])

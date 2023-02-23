@@ -39,8 +39,8 @@ def AppartmentPersonAdd(request):
             deviceId = useracc.deviceID
             message = messaging.Message(
                 notification = messaging.Notification(
-                    title = "new request",
-                    body = "new requst",
+                    title = "New appartment request",
+                    body = "You have a new request by" + person_obj.firstName + " " + person_obj.lastName,
                 ),
                 token = deviceId,
             )
@@ -51,12 +51,8 @@ def AppartmentPersonAdd(request):
             appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
             person = Person.objects.get(personId = request.data['person_id'])
 
-            tenant_role = Role.objects.get(roleName = "Tenant")
-            role_person = RolePerson.objects.get(personId = request.data['person_id'], roleId = tenant_role)
-
-            new_role = Role.objects.get(roleName = "Owner")
-            role_person.roleId = new_role
-            role_person.save()
+            tenant_role = Role.objects.get(roleName = "Owner")
+            RolePerson.objects.create(personId = person.personId, roleId = tenant_role)
 
             AppartmentPerson.objects.create(appartmentId=appartment, personId=person, isOwner=True)
             return Response(status=status.HTTP_201_CREATED)
