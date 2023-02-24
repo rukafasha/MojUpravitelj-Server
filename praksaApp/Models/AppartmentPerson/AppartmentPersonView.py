@@ -10,6 +10,7 @@ from .AppartmentPersonSerializer import AppartmentPersonSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from firebase_admin import credentials, messaging
 
 @api_view(['GET'])
 def AppartmentPersonGetAll(request):
@@ -33,18 +34,25 @@ def AppartmentPersonAdd(request):
             
             user_account_status.approved = False
             user_account_status.save()
-
+            
+            useracc = UserAccount.objects.get(userAccountId = apt_owner.personId.userAccountId.userAccountId)
+            deviceId = useracc.deviceID
+            message = messaging.Message(
+                notification = messaging.Notification(
+                    title = "New appartment request",
+                    body = "You have a new request by" + person_obj.firstName + " " + person_obj.lastName,
+                ),
+                token = deviceId,
+            )
+            response = messaging.send(message)
+            
             return Response("Apartment has an owner. Residency application submitted.",status=status.HTTP_200_OK)
         else:
             appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
             person = Person.objects.get(personId = request.data['person_id'])
 
-            tenant_role = Role.objects.get(roleName = "tenant")
-            role_person = RolePerson.objects.get(personId = request.data['person_id'], roleId = tenant_role)
-
-            new_role = Role.objects.get(roleName = "owner")
-            role_person.roleId = new_role
-            role_person.save()
+            tenant_role = Role.objects.get(roleName = "Owner")
+            RolePerson.objects.create(personId = person.personId, roleId = tenant_role)
 
             AppartmentPerson.objects.create(appartmentId=appartment, personId=person, isOwner=True)
             return Response(status=status.HTTP_201_CREATED)

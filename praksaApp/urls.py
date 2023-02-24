@@ -1,6 +1,7 @@
 from django.urls import path
 
 from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
+from praksaApp.FCMManager import sendPush
 from praksaApp.Models.Request.RequestView import RequestGetAll, RequestGetNotApproved, RequestPut
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
@@ -121,4 +122,7 @@ urlpatterns = [
     path('registration', Registration),
     path('companyRegistration', CompanyRegistration),
     path('login', Login),
+
+
+    path('send-push', sendPush),
 ] 
