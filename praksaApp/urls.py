@@ -1,19 +1,20 @@
 from django.urls import path
 
 from praksaApp.Auth.AuthView import CompanyRegistration, Login, Registration
+from praksaApp.FCMManager import sendPush
 from praksaApp.Models.Request.RequestView import RequestGetAll, RequestGetNotApproved, RequestPut
 
 from .Models.Country.CountryView import CountryGetAll, CountryAdd, CountryDelete,CountryGetByID,CountryPut
 from .Models.County.CountyView import CountyPut, CountyAdd, CountyDelete, CountyGetAll, CountyGetByID, getCountyByCountry, getCountyByName
 from .Models.Building.BuildingView import BuildingAdd, BuildingPut, BuildingDelete, BuildingGetAll, BuildingGetByID, GetBuildingByUser,GetBuildingByCompany, GetBuildingsByAddress
 from .Models.Company.CompanyView import CompanyAdd, CompanyDelete, CompanyGetAll, CompanyGetByID,CompanyPut
-from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete
+from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, RoleDelete, RoleGetByString
 from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete, RoleGetByUser
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete, UserAccountUsernameVerification
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete, GetPersonByAppartment
 from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete, GetApartmentsWithoutPerson
+from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete, GetCommentByReport
 from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonAddByTenant, AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId, GetApartmentsByPersonId
-from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete
 from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete, ReportGetByUser, ReportGetByCompany, ReportGetByBuilding
 from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete, ReportStatusGetByStatus
 
@@ -54,6 +55,7 @@ urlpatterns = [
     path('role/<int:id>', RoleGetById),
     path('role/edit/<int:id>', RolePut),
     path('role/delete/<int:id>', RoleDelete),
+    path('role/get/name/<str:str>', RoleGetByString),
     
     path('rolePerson/', RolePersonGetAll),
     path('rolePerson/add', RolePersonAdd),
@@ -97,6 +99,7 @@ urlpatterns = [
     path('comment/<int:id>', CommentGetById),
     path('comment/edit/<int:id>', CommentPut),
     path('comment/delete/<int:id>', CommentDelete),
+    path('comment/get/report/<int:id>', GetCommentByReport),
 
     path('report/', ReportGetAll),
     path('report/add', ReportAdd),
@@ -121,4 +124,7 @@ urlpatterns = [
     path('registration', Registration),
     path('companyRegistration', CompanyRegistration),
     path('login', Login),
+
+
+    path('send-push', sendPush),
 ] 
