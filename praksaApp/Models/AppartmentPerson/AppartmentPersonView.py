@@ -37,14 +37,15 @@ def AppartmentPersonAdd(request):
             
             useracc = UserAccount.objects.get(userAccountId = apt_owner.personId.userAccountId.userAccountId)
             deviceId = useracc.deviceID
-            message = messaging.Message(
-                notification = messaging.Notification(
-                    title = "New appartment request",
-                    body = "You have a new request by" + person_obj.firstName + " " + person_obj.lastName,
-                ),
-                token = deviceId,
-            )
-            response = messaging.send(message)
+            if(deviceId != None):
+                message = messaging.Message(
+                    notification = messaging.Notification(
+                        title = "New appartment request",
+                        body = "You have a new request by" + person_obj.firstName + " " + person_obj.lastName,
+                    ),
+                    token = deviceId,
+                )
+                response = messaging.send(message)
             
             return Response("Apartment has an owner. Residency application submitted.",status=status.HTTP_200_OK)
         else:
@@ -52,7 +53,7 @@ def AppartmentPersonAdd(request):
             person = Person.objects.get(personId = request.data['person_id'])
 
             tenant_role = Role.objects.get(roleName = "Owner")
-            RolePerson.objects.create(personId = person.personId, roleId = tenant_role)
+            RolePerson.objects.create(personId = person, roleId = tenant_role)
 
             AppartmentPerson.objects.create(appartmentId=appartment, personId=person, isOwner=True)
             return Response(status=status.HTTP_201_CREATED)
