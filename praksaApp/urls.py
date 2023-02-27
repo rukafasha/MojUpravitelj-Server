@@ -12,9 +12,9 @@ from .Models.Role.RoleView import RoleGetAll, RoleAdd, RoleGetById, RolePut, Rol
 from .Models.RolePerson.RolePersonView import RolePersonGetAll, RolePersonAdd, RolePersonGetById, RolePersonPut, RolePersonDelete, RoleGetByUser
 from .Models.UserAccount.UserAccountView import UserAccountGetAll, UserAccountAdd, UserAccountGetById, UserAccountPut, UserAccountDelete, UserAccountUsernameVerification
 from .Models.Person.PersonView import PersonGetAll, PersonAdd, PersonGetById, PersonPut, PersonDelete, GetPersonByAppartment
-from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete
+from .Models.Appartment.AppartmentView import AppartmentGetAll, AppartmentAdd, AppartmentGetById, AppartmentPut, AppartmentDelete, GetApartmentsWithoutPerson
+from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId, GetApartmentsByPersonId, AppartmentPersonAddByTenant
 from .Models.Comment.CommentView import CommentGetAll, CommentAdd, CommentGetById, CommentPut, CommentDelete, GetCommentByReport
-from .Models.AppartmentPerson.AppartmentPersonView import AppartmentPersonGetAll, AppartmentPersonAdd, AppartmentPersonGetById, AppartmentPersonPut, AppartmentPersonDelete, GetApartmentsByBuildingId, GetApartmentsByPersonId
 from .Models.Report.ReportView import ReportGetAll, ReportAdd, ReportGetById, ReportPut, ReportDelete, ReportGetByUser, ReportGetByCompany, ReportGetByBuilding
 from .Models.ReportStatus.ReportStatusView import ReportStatusGetAll, ReportStatusAdd, ReportStatusGetById, ReportStatusPut, ReportStatusDelete, ReportStatusGetByStatus
 
@@ -84,6 +84,7 @@ urlpatterns = [
     path('appartment/edit/<int:id>', AppartmentPut),
     path('appartment/delete/<int:id>', AppartmentDelete),
     path('appartment/details/<int:id>', GetApartmentsByBuildingId),
+    path('appartment/withoutPerson', GetApartmentsWithoutPerson),
 
     path('appartmentPerson/', AppartmentPersonGetAll),
     path('appartmentPerson/add', AppartmentPersonAdd),
@@ -91,6 +92,7 @@ urlpatterns = [
     path('appartmentPerson/edit/<int:id>', AppartmentPersonPut),
     path('appartmentPerson/delete/<int:id>', AppartmentPersonDelete),
     path('appartmentPerson/person/<int:id>', GetApartmentsByPersonId),
+    path('appartmentPerson/addByTenant', AppartmentPersonAddByTenant),
     
     path('comment/', CommentGetAll),
     path('comment/add', CommentAdd),
