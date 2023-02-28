@@ -26,14 +26,15 @@ def CommentAdd(request):
         person = Person.objects.get(personId = report.madeBy.personId)
         useracc = UserAccount.objects.get(userAccountId = person.userAccountId.userAccountId)
         deviceId = useracc.deviceID
-        message = messaging.Message(
-            notification = messaging.Notification(
-                title = "New comment",
-                body = "You have a new comment on " + report.title + " by " + request.data["personId"],
-            ),
-            token = deviceId,
-        )
-        response = messaging.send(message)
+        if(deviceId != None and deviceId != "null"):
+            message = messaging.Message(
+                notification = messaging.Notification(
+                    title = "New comment",
+                    body = "You have a new comment on " + report.title + " by " + request.data["personId"],
+                ),
+                token = deviceId,
+            )
+            response = messaging.send(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 @api_view(['GET'])
@@ -43,9 +44,8 @@ def CommentGetById(request, id):
     except Comment.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data)
+    serializer = CommentSerializer(comment)
+    return Response(serializer.data)
 
 @api_view(['PUT'])
 def CommentPut(request, id):
@@ -74,6 +74,5 @@ def GetCommentByReport(request, id):
     except Comment.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = CommentSerializer(comment, many=True)
-        return Response(serializer.data)
+    serializer = CommentSerializer(comment, many=True)
+    return Response(serializer.data)
