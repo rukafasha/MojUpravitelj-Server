@@ -1,1 +1,13 @@
 .venv/
+__pycache__/
+*.pyc
+*$py.class
+
+build/
+dist/
+
+*~
+*.swp
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/MojUpravitelj-Server/v15/.ssms_suo

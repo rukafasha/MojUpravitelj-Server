@@ -1,12 +1,21 @@
 from django.db import models
 from ..Person.PersonModel import Person
-from ..Role.RoleModel import Role
+from ..ReportStatus.ReportStatusModel import ReportStatus
+from safedelete.models import SafeDeleteModel, SOFT_DELETE
 
-class Report(models.Model):
-    personId = models.ForeignKey(Person, on_delete=models.CASCADE)
-    roleId = models.ForeignKey(Role, on_delete=models.CASCADE)
-    
+class Report(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    timeCreated = models.DateTimeField(auto_now_add=True)
+    timeFinished = models.DateTimeField(null=True, blank=True)
+    madeBy = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="madeBy")
+    closedBy = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, related_name="closedBy", blank=True)
+    status = models.ForeignKey(ReportStatus, on_delete=models.CASCADE)
     
     class Meta:
         db_table = "Report"
-        unique_together = (('personId', 'roleId'),)
+        
+    def __str__(self):
+        return self.madeBy.firstName + " " + self.madeBy.lastName + " - " + self.title
