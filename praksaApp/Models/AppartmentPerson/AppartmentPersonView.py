@@ -85,7 +85,20 @@ def AppartmentPersonAdd(request):
 
     except AppartmentPerson.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
+@api_view(['POST'])
+def AppartmentHasOwner(request):
+    try:
+        has_an_owner = AppartmentPerson.objects.filter(appartmentId = request.data['apartment_id'], isOwner=True).count()
+
+        if has_an_owner:
+            return Response("The apartment has an owner. Would you like to become a tenant?", status=status.HTTP_200_OK)
+        else:
+            return Response("The apartment doesn't have an owner. Would you like to become the owner of the apartment?", status=status.HTTP_200_OK)
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['GET'])
 def AppartmentPersonGetById(request, id):
     try:
