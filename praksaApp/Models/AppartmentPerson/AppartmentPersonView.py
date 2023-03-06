@@ -37,7 +37,7 @@ def AppartmentPersonAdd(request):
             
             useracc = UserAccount.objects.get(userAccountId = apt_owner.personId.userAccountId.userAccountId)
             deviceId = useracc.deviceID
-            if(deviceId != None):
+            if(deviceId != None and deviceId != "null"):
                 message = messaging.Message(
                     notification = messaging.Notification(
                         title = "New appartment request",
