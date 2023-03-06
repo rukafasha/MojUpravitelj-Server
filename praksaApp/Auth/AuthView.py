@@ -68,9 +68,10 @@ def Login(request):
                         "person":person_serializer.data, 
                         "building_ids":building_ids,
                         "list_of_roles":list_of_roles,
-                        "token": jwt_token
+                        "token": jwt_token,
+                        "username": request.data['username'],
                         }
-
+                
                 return Response(data, status=status.HTTP_201_CREATED)
             else:
                 return Response("Incorrect password. Please try again.", status=status.HTTP_401_UNAUTHORIZED)

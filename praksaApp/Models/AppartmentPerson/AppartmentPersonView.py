@@ -1,4 +1,5 @@
 from praksaApp.Models.Appartment.AppartmentModel import Appartment
+from praksaApp.Models.Appartment.AppartmentSerializer import AppartmentSerializer
 from praksaApp.Models.Building.BuildingModel import Building
 from praksaApp.Models.Person.PersonModel import Person
 from praksaApp.Models.Request.RequestModel import Request
@@ -17,7 +18,32 @@ def AppartmentPersonGetAll(request):
     appartmentPerson = AppartmentPerson.objects.all().distinct()
     serializer = AppartmentPersonSerializer(appartmentPerson, many=True)        
     return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+@api_view(['POST'])
+def AppartmentPersonAddByTenant(request):
+
+    try:
+        has_an_owner = AppartmentPerson.objects.filter(appartmentId = request.data['apartment_id'], isOwner=True).count()
+        
+        if has_an_owner:
+            person_obj = Person.objects.get(personId = request.data['person_id'])
+            user_account_status = UserAccount.objects.get(userAccountId = person_obj.userAccountId.userAccountId)
+
+            apt_owner = AppartmentPerson.objects.filter(appartmentId = request.data['apartment_id']).first()
+
+            Request.objects.create(ownerId =  apt_owner.personId, tenantId = person_obj, appartmentId = apt_owner.appartmentId)
+            
+            return Response(status=status.HTTP_200_OK)
+        else:
+            appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
+            person = Person.objects.get(personId = request.data['person_id'])
+
+            AppartmentPerson.objects.create(appartmentId=appartment, personId=person, isOwner=True)
+            return Response(status=status.HTTP_201_CREATED)
+
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+
 @api_view(['POST'])
 def AppartmentPersonAdd(request):
 
@@ -60,7 +86,20 @@ def AppartmentPersonAdd(request):
 
     except AppartmentPerson.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
+@api_view(['POST'])
+def AppartmentHasOwner(request):
+    try:
+        has_an_owner = AppartmentPerson.objects.filter(appartmentId = request.data['apartment_id'], isOwner=True).count()
+
+        if has_an_owner:
+            return Response("The apartment has an owner. Would you like to become a tenant?", status=status.HTTP_200_OK)
+        else:
+            return Response("The apartment doesn't have an owner. Would you like to become the owner of the apartment?", status=status.HTTP_200_OK)
+    except AppartmentPerson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['GET'])
 def AppartmentPersonGetById(request, id):
     try:
@@ -113,7 +152,6 @@ def GetApartmentsByBuildingId(request, id):
 
 @api_view(['GET'])
 def GetApartmentsByPersonId(request, id):
-    
     try:
         apartments = AppartmentPerson.objects.filter(personId = id)
     except AppartmentPerson.DoesNotExist:
