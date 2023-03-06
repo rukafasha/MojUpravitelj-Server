@@ -61,14 +61,15 @@ def ReportAdd(request):
             tokens.append(item.deviceID)
             
         for item in tokens:
-            message = messaging.Message(
-                notification = messaging.Notification(
-                    title = "New report",
-                    body = "New report has been made.",
-                ),
-                token = item,
-            )
-        response = messaging.send(message)
+            if(item != None and item != "null"):
+                message = messaging.Message(
+                    notification = messaging.Notification(
+                        title = "New report",
+                        body = "New report has been made.",
+                    ),
+                    token = item,
+                )
+                response = messaging.send(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 @api_view(['GET'])
@@ -97,14 +98,15 @@ def ReportPut(request, id):
         person = Person.objects.get(personId = personId)
         useracc = UserAccount.objects.get(userAccountId = person.userAccountId.userAccountId)
         deviceId = useracc.deviceID
-        message = messaging.Message(
-            notification = messaging.Notification(
-                title = "Report has been updated",
-                body = "Your report has been updated by " + person.firstName + " " + person.lastName,
-            ),
-            token = deviceId,
-        )
-        response = messaging.send(message)
+        if(deviceId != None and deviceId != "null"):
+            message = messaging.Message(
+                notification = messaging.Notification(
+                    title = "Report has been updated",
+                    body = "Your report has been updated by " + person.firstName + " " + person.lastName,
+                ),
+                token = deviceId,
+            )
+            response = messaging.send(message)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
