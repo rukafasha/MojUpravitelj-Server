@@ -33,11 +33,31 @@ def AppartmentPersonAddByTenant(request):
 
             Request.objects.create(ownerId =  apt_owner.personId, tenantId = person_obj, appartmentId = apt_owner.appartmentId)
             
+            useracc = UserAccount.objects.get(userAccountId = apt_owner.personId.userAccountId.userAccountId)
+            deviceId = useracc.deviceID
+            if(deviceId != None and deviceId != "null"):
+                message = messaging.Message(
+                    notification = messaging.Notification(
+                        title = "New appartment request",
+                        body = "You have a new request by" + person_obj.firstName + " " + person_obj.lastName,
+                    ),
+                    token = deviceId,
+                )
+                response = messaging.send(message)
             return Response(status=status.HTTP_200_OK)
         else:
             appartment = Appartment.objects.get(appartmentId = request.data['apartment_id'])
             person = Person.objects.get(personId = request.data['person_id'])
-
+            
+            tenant_role = Role.objects.get(roleName = "Owner")
+            try:
+                personRole = RolePerson.objects.get(personId = person.personId, roleId = tenant_role.roleId )
+            except RolePerson.DoesNotExist:
+                personRole = None
+                
+            if(personRole == None):
+                RolePerson.objects.create(personId = person, roleId = tenant_role)
+            
             AppartmentPerson.objects.create(appartmentId=appartment, personId=person, isOwner=True)
             return Response(status=status.HTTP_201_CREATED)
 
