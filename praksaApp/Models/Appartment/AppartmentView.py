@@ -1,3 +1,4 @@
+from praksaApp.Models.Building.BuildingModel import Building
 from .AppartmentModel import Appartment
 from .AppartmentSerializer import AppartmentSerializer
 from rest_framework.decorators import api_view
@@ -49,11 +50,20 @@ def AppartmentDelete(request, id):
 
 @api_view(['POST'])
 def GetApartmentsWithoutPerson(request):
-    try:
-        apartments = Appartment.objects.all().exclude(appartmentId__in = request.data["lista"])
+    try:        
+        apartments = Appartment.objects.all().exclude(appartmentId__in = request.data["lista"]).filter(buildingId = request.data["building_id"])
+
     except Appartment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    apartment_details = []
+    for apartment in apartments:
+        apartment_details.append({
+            "apartmentId":apartment.appartmentId,
+            "apartmentNumber":apartment.appartmentNumber,
+            "buildingId":apartment.buildingId.buildingId,
+            "address":apartment.buildingId.address
+            })
     
     serializer = AppartmentSerializer(apartments, many=True)
-    return Response(serializer.data)
+    return Response(apartment_details)
         
